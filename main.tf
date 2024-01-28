@@ -68,7 +68,7 @@ resource "aws_route_table_association" "my_subnet_association" {
 }
 # Security Group for EC2 Instance
 resource "aws_security_group" "ec2_sg" {
-  name        = "ec2_sg"
+  name        = "ec2_sg-1"
   description = "Security group for EC2 instance"
   vpc_id      = data.aws_vpc.selected.id
 
