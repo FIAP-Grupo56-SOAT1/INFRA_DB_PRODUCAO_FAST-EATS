@@ -160,3 +160,4 @@ resource "aws_fasteatscozinha_cluster" "fasteatscozinha_cluster" {
   vpc_security_group_ids = [aws_security_group.fasteatscozinha-security-group.id]
   # Additional cluster settings can be configured here
 }
+
