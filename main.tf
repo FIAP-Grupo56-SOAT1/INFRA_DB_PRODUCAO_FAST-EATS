@@ -2,23 +2,16 @@ provider "aws" {
   region = "us-east-1"
 }
 
-# VPC
-resource "aws_vpc" "my_vpc" {
-  /*
-  
-  cidr_block = "10.0.0.0/16"
-  enable_dns_support = true
-  enable_dns_hostnames = true
-  tags = {
-    Name = "my_vpc"
+data "aws_vpc" "selected" {
+  filter {
+    name = "tag:Name"
+    values = ["vpc-ecs"]
   }
-  */
-  id = "019d41d493d5b9d95"
 }
 
 # Subnets (Public)
 resource "aws_subnet" "my_subnet_1" {
-  vpc_id                  = aws_vpc.my_vpc.id
+  vpc_id                  = data.aws_vpc.selected.id
   cidr_block              = "10.0.4.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
@@ -28,7 +21,7 @@ resource "aws_subnet" "my_subnet_1" {
 }
 # Subnet in us-east-1b (private)
 resource "aws_subnet" "subnet_us_east_1b_private" {
-  vpc_id                  = aws_vpc.my_vpc.id
+  vpc_id                  = data.aws_vpc.selected.id
   cidr_block              = "10.0.2.0/24"
   availability_zone       = "us-east-1b"
   map_public_ip_on_launch = false  # Private subnet
@@ -40,7 +33,7 @@ resource "aws_subnet" "subnet_us_east_1b_private" {
 
 # Subnet in us-east-1c (private)
 resource "aws_subnet" "subnet_us_east_1c_private" {
-  vpc_id                  = aws_vpc.my_vpc.id
+  vpc_id                  = data.aws_vpc.selected.id
   cidr_block              = "10.0.3.0/24"
   availability_zone       = "us-east-1c"
   map_public_ip_on_launch = false  # Private subnet
@@ -51,7 +44,7 @@ resource "aws_subnet" "subnet_us_east_1c_private" {
 }
 # Internet Gateway
 resource "aws_internet_gateway" "my_igw" {
-  vpc_id = aws_vpc.my_vpc.id
+  vpc_id = data.aws_vpc.selected.id
 
   tags = {
     Name = "my_igw"
@@ -60,7 +53,7 @@ resource "aws_internet_gateway" "my_igw" {
 
 # Route Table
 resource "aws_route_table" "my_route_table" {
-  vpc_id = aws_vpc.my_vpc.id
+  vpc_id = data.aws_vpc.selected.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -77,7 +70,7 @@ resource "aws_route_table_association" "my_subnet_association" {
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2_sg"
   description = "Security group for EC2 instance"
-  vpc_id      = aws_vpc.my_vpc.id
+  vpc_id      = data.aws_vpc.selected.id
 
   ingress {
     from_port = 22
@@ -102,7 +95,7 @@ resource "aws_security_group" "ec2_sg" {
 resource aws_security_group "docdb-security-group"{
     name        = "docdb-sg"
     description = "Security group for documentdb"
-    vpc_id      = aws_vpc.my_vpc.id
+    vpc_id      = data.aws_vpc.selected.id
     ingress {
         from_port = 27017
         to_port = 27017
