@@ -4,12 +4,16 @@ provider "aws" {
 
 # VPC
 resource "aws_vpc" "my_vpc" {
+  /*
+  
   cidr_block = "10.0.0.0/16"
   enable_dns_support = true
   enable_dns_hostnames = true
   tags = {
     Name = "my_vpc"
   }
+  */
+  id = "vpc-019d41d493d5b9d95"
 }
 
 # Subnets (Public)
