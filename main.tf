@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
 }
 
 # VPC
@@ -16,33 +16,33 @@ resource "aws_vpc" "my_vpc" {
 resource "aws_subnet" "my_subnet_1" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.4.0/24"
-  availability_zone       = "us-west-2a"
+  availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
   tags = {
     Name = "my_subnet"
   }
 }
-# Subnet in us-west-2b (private)
-resource "aws_subnet" "subnet_us_west_1b_private" {
+# Subnet in us-east-1b (private)
+resource "aws_subnet" "subnet_us_east_1b_private" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.2.0/24"
-  availability_zone       = "us-west-2b"
+  availability_zone       = "us-east-1b"
   map_public_ip_on_launch = false  # Private subnet
 
   tags = {
-    Name = "subnet_us_west_1b_private"
+    Name = "subnet_us_east_1b_private"
   }
 }
 
-# Subnet in us-west-2c (private)
-resource "aws_subnet" "subnet_us_west_1c_private" {
+# Subnet in us-east-1c (private)
+resource "aws_subnet" "subnet_us_east_1c_private" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.3.0/24"
-  availability_zone       = "us-west-2c"
+  availability_zone       = "us-east-1c"
   map_public_ip_on_launch = false  # Private subnet
 
   tags = {
-    Name = "subnet_us_west_1c_private"
+    Name = "subnet_us_east_1c_private"
   }
 }
 # Internet Gateway
@@ -148,11 +148,11 @@ resource "aws_docdb_cluster_instance" "mydocdb_instance" {
 }
 resource "aws_docdb_subnet_group" "subnet_group" {
   name       = "docdb-subnet-group"
-  subnet_ids = [aws_subnet.subnet_us_west_1b_private.id,aws_subnet.subnet_us_west_1c_private.id]
+  subnet_ids = [aws_subnet.subnet_us_east_1b_private.id,aws_subnet.subnet_us_east_1c_private.id]
 }
 resource "aws_docdb_cluster" "docdb_cluster" {
   cluster_identifier   = "docdb-cluster"
-  availability_zones   = ["us-west-2a","us-west-2b","us-west-2c"]  # Replace with your desired AZs
+  availability_zones   = ["us-east-1a","us-east-1b","us-east-1c"]  # Replace with your desired AZs
   engine_version       = "4.0.0"
   master_username      = "fiap56"
   master_password      = "fiapsoat1grupo56"  # Replace with your own strong password
