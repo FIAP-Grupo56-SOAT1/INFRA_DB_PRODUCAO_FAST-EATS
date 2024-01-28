@@ -13,7 +13,7 @@ resource "aws_vpc" "my_vpc" {
     Name = "my_vpc"
   }
   */
-  id = "vpc-019d41d493d5b9d95"
+  id = "019d41d493d5b9d95"
 }
 
 # Subnets (Public)
