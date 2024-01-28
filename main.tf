@@ -23,26 +23,26 @@ resource "aws_subnet" "my_subnet_1" {
   }
 }
 # Subnet in us-west-2b (private)
-resource "aws_subnet" "subnet_us_west_2b_private" {
+resource "aws_subnet" "subnet_us_west_1b_private" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.2.0/24"
   availability_zone       = "us-west-2b"
   map_public_ip_on_launch = false  # Private subnet
 
   tags = {
-    Name = "subnet_us-west-2b_private"
+    Name = "subnet_us_west_1b_private"
   }
 }
 
 # Subnet in us-west-2c (private)
-resource "aws_subnet" "subnet_us_west_2c_private" {
+resource "aws_subnet" "subnet_us_west_1c_private" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.3.0/24"
   availability_zone       = "us-west-2c"
   map_public_ip_on_launch = false  # Private subnet
 
   tags = {
-    Name = "subnet_us_west_2c_private"
+    Name = "subnet_us_west_1c_private"
   }
 }
 # Internet Gateway
@@ -95,8 +95,8 @@ resource "aws_security_group" "ec2_sg" {
    }
 }
 ### db security group
-resource aws_security_group "fasteatscozinha-security-group"{
-    name        = "fasteatscozinha-sg"
+resource aws_security_group "docdb-security-group"{
+    name        = "docdb-sg"
     description = "Security group for documentdb"
     vpc_id      = aws_vpc.my_vpc.id
     ingress {
@@ -133,22 +133,23 @@ resource "aws_instance" "my_instance" {
               EOF
  tags = {
     Name = "my-ssh-tunnel-server"
+
  }
 }
 
 # DocumentDB Cluster
-resource "aws_fasteatscozinha_cluster_instance" "myfasteatscozinha_instance" {
-  identifier           = "fasteatscozinha-cluster-instance"
-  cluster_identifier   = aws_fasteatscozinha_cluster.fasteatscozinha_cluster.id
+resource "aws_docdb_cluster_instance" "mydocdb_instance" {
+  identifier           = "docdb-cluster-instance"
+  cluster_identifier   = aws_docdb_cluster.docdb_cluster.id
   instance_class       = "db.t3.medium"  # Replace with your desired instance type
 #   publicly_accessible  = false
 }
-resource "aws_fasteatscozinha_subnet_group" "subnet_group" {
+resource "aws_docdb_subnet_group" "subnet_group" {
   name       = "db-subnet-group"
-  subnet_ids = [aws_subnet.subnet_us_west_2b_private.id,aws_subnet.subnet_us_west_2c_private.id]
+  subnet_ids = [aws_subnet.subnet_us_west_1b_private.id,aws_subnet.subnet_us_west_1c_private.id]
 }
-resource "aws_fasteatscozinha_cluster" "fasteatscozinha_cluster" {
-  cluster_identifier   = "fasteatscozinha-cluster"
+resource "aws_docdb_cluster" "docdb_cluster" {
+  cluster_identifier   = "docdb-cluster"
   availability_zones   = ["us-west-2a","us-west-2b","us-west-2c"]  # Replace with your desired AZs
   engine_version       = "4.0.0"
   master_username      = "fiap56"
@@ -156,8 +157,7 @@ resource "aws_fasteatscozinha_cluster" "fasteatscozinha_cluster" {
   backup_retention_period = 5  # Replace with your desired retention period
   preferred_backup_window = "07:00-09:00"  # Replace with your desired backup window
   skip_final_snapshot   = true
-  db_subnet_group_name = aws_fasteatscozinha_subnet_group.subnet_group.name
-  vpc_security_group_ids = [aws_security_group.fasteatscozinha-security-group.id]
+  db_subnet_group_name = aws_docdb_subnet_group.subnet_group.name
+  vpc_security_group_ids = [aws_security_group.docdb-security-group.id]
   # Additional cluster settings can be configured here
 }
-
