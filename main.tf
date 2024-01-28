@@ -34,7 +34,7 @@ resource "aws_subnet" "subnet_us_east_1b_private" {
 # Subnet in us-east-1c (private)
 resource "aws_subnet" "subnet_us_east_1c_private" {
   vpc_id                  = data.aws_vpc.selected.id
-  cidr_block              = "10.0.3.0/24"
+  cidr_block              = "10.0.5.0/24"
   availability_zone       = "us-east-1c"
   map_public_ip_on_launch = false  # Private subnet
 
