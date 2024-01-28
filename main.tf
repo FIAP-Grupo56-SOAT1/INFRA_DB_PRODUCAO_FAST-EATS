@@ -115,7 +115,7 @@ resource "aws_key_pair" "ssh_keypair" {
 
 # EC2 Instance
 resource "aws_instance" "my_instance" {
-  ami             = "ami-0fc5d935ebf8bc3bc" # Ubuntu 20.04 LTS
+  ami             = "ami-048ac6bc3c08c2f04" # Ubuntu 20.04 LTS
   instance_type   = "t2.micro"
   #key_name        = aws_key_pair.ssh_keypair.key_name
   subnet_id       = aws_subnet.my_subnet_1.id
