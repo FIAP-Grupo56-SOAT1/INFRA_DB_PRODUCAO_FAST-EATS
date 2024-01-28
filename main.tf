@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-2"
+  region = "us-east-1"
 }
 
 # VPC
@@ -16,17 +16,17 @@ resource "aws_vpc" "my_vpc" {
 resource "aws_subnet" "my_subnet_1" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.4.0/24"
-  availability_zone       = "us-east-2a"
+  availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
   tags = {
     Name = "my_subnet"
   }
 }
-# Subnet in us-east-2b (private)
+# Subnet in us-east-1b (private)
 resource "aws_subnet" "subnet_us_east_1b_private" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.2.0/24"
-  availability_zone       = "us-east-2b"
+  availability_zone       = "us-east-1b"
   map_public_ip_on_launch = false  # Private subnet
 
   tags = {
@@ -34,11 +34,11 @@ resource "aws_subnet" "subnet_us_east_1b_private" {
   }
 }
 
-# Subnet in us-east-2c (private)
+# Subnet in us-east-1c (private)
 resource "aws_subnet" "subnet_us_east_1c_private" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.3.0/24"
-  availability_zone       = "us-east-2c"
+  availability_zone       = "us-east-1c"
   map_public_ip_on_launch = false  # Private subnet
 
   tags = {
@@ -115,7 +115,7 @@ resource "aws_key_pair" "ssh_keypair" {
 
 # EC2 Instance
 resource "aws_instance" "my_instance" {
-  ami             = "ami-07e4e8101a24d7fb5" # Ubuntu 20.04 LTS
+  ami             = "ami-0fc5d935ebf8bc3bc" # Ubuntu 20.04 LTS
   instance_type   = "t2.micro"
   #key_name        = aws_key_pair.ssh_keypair.key_name
   subnet_id       = aws_subnet.my_subnet_1.id
@@ -152,7 +152,7 @@ resource "aws_docdb_subnet_group" "subnet_group" {
 }
 resource "aws_docdb_cluster" "docdb_cluster" {
   cluster_identifier   = "docdb-cluster"
-  availability_zones   = ["us-east-2a","us-east-2b","us-east-2c"]  # Replace with your desired AZs
+  availability_zones   = ["us-east-1a","us-east-1b","us-east-1c"]  # Replace with your desired AZs
   engine_version       = "4.0.0"
   master_username      = "fiap56"
   master_password      = "fiapsoat1grupo56"  # Replace with your own strong password
