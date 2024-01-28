@@ -147,7 +147,7 @@ resource "aws_docdb_cluster_instance" "mydocdb_instance" {
 #   publicly_accessible  = false
 }
 resource "aws_docdb_subnet_group" "subnet_group" {
-  name       = "db-subnet-group"
+  name       = "docdb-subnet-group"
   subnet_ids = [aws_subnet.subnet_us_west_1b_private.id,aws_subnet.subnet_us_west_1c_private.id]
 }
 resource "aws_docdb_cluster" "docdb_cluster" {
