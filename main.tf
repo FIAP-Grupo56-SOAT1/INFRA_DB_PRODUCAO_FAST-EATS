@@ -12,7 +12,7 @@ data "aws_vpc" "selected" {
 # Subnets (Public)
 resource "aws_subnet" "my_subnet_1" {
   vpc_id                  = data.aws_vpc.selected.id
-  cidr_block              = "10.1.0.0/24"
+  cidr_block              = "10.0.7.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
   tags = {
@@ -22,7 +22,7 @@ resource "aws_subnet" "my_subnet_1" {
 # Subnet in us-east-1b (private)
 resource "aws_subnet" "subnet_us_east_1b_private" {
   vpc_id                  = data.aws_vpc.selected.id
-  cidr_block              = "10.2.0.0/24"
+  cidr_block              = "10.0.8.0/24"
   availability_zone       = "us-east-1b"
   map_public_ip_on_launch = false  # Private subnet
 
@@ -34,7 +34,7 @@ resource "aws_subnet" "subnet_us_east_1b_private" {
 # Subnet in us-east-1c (private)
 resource "aws_subnet" "subnet_us_east_1c_private" {
   vpc_id                  = data.aws_vpc.selected.id
-  cidr_block              = "10.3.0.0/24"
+  cidr_block              = "10.0.9.0/24"
   availability_zone       = "us-east-1c"
   map_public_ip_on_launch = false  # Private subnet
 
