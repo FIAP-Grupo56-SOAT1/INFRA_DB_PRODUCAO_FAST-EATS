@@ -39,3 +39,4 @@ terraform.rc
 
 .idea
 .env
+/.terraform.lock.hcl

@@ -1,7 +1,31 @@
-provider "aws" {
-  region = "us-west-2"
+terraform {
+  required_version = ">= 1.3.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.37.0"
+    }
+  }
+
+  backend "s3" {
+    bucket = "bucket-fiap56-to-remote-state"
+    key    = "aws-infra-docdb-producao-fiap56/terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
+
+
+provider "aws" {
+  region = var.region
+  default_tags {
+    tags = {
+      owner      = var.owner
+      managed-by = var.managedby
+    }
+  }
+}
 
 ##### Creating a VPC #####
 # Provide a reference to your default VPC
@@ -35,7 +59,6 @@ resource "aws_docdb_subnet_group" "produacao_docdb_subnet_group" {
 
   tags = {
     Name = "produacao-docdb-subnet-group"
-    Environment = "Test"
   }
 }
 
@@ -44,16 +67,16 @@ resource "aws_docdb_cluster" "produacao_docdb_cluster" {
   master_username         = jsondecode(data.aws_secretsmanager_secret_version.docdb_credentials.secret_string)["username"]
   master_password         = jsondecode(data.aws_secretsmanager_secret_version.docdb_credentials.secret_string)["password"]
   backup_retention_period = 0
-  preferred_backup_window = "07:00-09:00"
+  #preferred_backup_window = "07:00-09:00"
   skip_final_snapshot     = true
   db_subnet_group_name    = aws_docdb_subnet_group.produacao_docdb_subnet_group.name
 
-  enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
+  #enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
   apply_immediately = true
 
   engine      = "docdb"
   engine_version = "3.6.0"
-  storage_encrypted = true
+  storage_encrypted = false
 
   vpc_security_group_ids = [aws_security_group.docdb_producao_sg.id]
 
