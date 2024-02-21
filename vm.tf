@@ -1,3 +1,4 @@
+
 ##### Creating a VPC #####
 # Provide a reference to your default VPC
 resource "aws_default_vpc" "default_vpc" {
@@ -9,21 +10,10 @@ resource "aws_default_subnet" "default_subnet_a" {
   availability_zone = "us-east-1a"
 }
 
-# Subnets (Public)
-resource "aws_subnet" "ec2_mongodb_subnet" {
-  vpc_id                  = aws_default_vpc.default_vpc.id
-  cidr_block              = "10.0.7.0/24"
-  availability_zone       = "us-east-1a"
-  map_public_ip_on_launch = true
-  tags = {
-    Name = "ec2_mongodb_subnet"
-  }
-}
-
 resource "aws_instance" "vm" {
   ami                         = "ami-07d9b9ddc6cd8dd30"
   instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.ec2_mongodb_subnet.id
+  subnet_id                   = aws_default_subnet.default_subnet_a.id
   vpc_security_group_ids      = [aws_security_group.ec2_mongodb_sg.id]
   associate_public_ip_address = true
   user_data                   = file("./scripts/criar_mongodb.sh")
