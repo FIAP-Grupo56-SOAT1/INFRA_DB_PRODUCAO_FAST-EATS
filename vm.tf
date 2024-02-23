@@ -1,4 +1,32 @@
 
+#-----------------CRIANDO UMA VM COM MONGODB E VPC FASTEATS-----------------
+#data "terraform_remote_state" "vpc_fasteats" {
+#  backend = "s3"
+#  config = {
+#    bucket = "bucket-fiap56-to-remote-state"
+#    key    = "aws-vpc-network-fiap56/terraform.tfstate"
+#    region = "us-east-1"
+#  }
+#}
+#
+#
+#resource "aws_instance" "vm" {
+#  ami                         = "ami-07d9b9ddc6cd8dd30"
+#  instance_type               = "t2.micro"
+#  subnet_id                   = data.terraform_remote_state.vpc_fasteats.outputs.subnet_publica_id
+#  vpc_security_group_ids      = [
+#    data.terraform_remote_state.vpc_fasteats.outputs.security_group_id,
+#    aws_security_group.ec2_mongodb_sg.id]
+#  associate_public_ip_address = true
+#  user_data                   = file("./scripts/criar_mongodb.sh")
+#
+#
+#  tags = {
+#    Name = "vm-mongodb"
+#  }
+#}
+
+#-----------------CRIANDO UMA VM COM MONGODB E VPC DEFALT-----------------
 ##### Creating a VPC #####
 # Provide a reference to your default VPC
 resource "aws_default_vpc" "default_vpc" {
@@ -24,12 +52,14 @@ resource "aws_instance" "vm" {
   }
 }
 
+#-------------------------------------------------------------------------
+
 # Security Group for EC2 Instance
 resource "aws_security_group" "ec2_mongodb_sg" {
   name        = "ec2_mongo_sg"
   description = "Security group for EC2 MongoDB instance"
+  #vpc_id      = data.terraform_remote_state.vpc_fasteats.outputs.vpc_id
   vpc_id      = aws_default_vpc.default_vpc.id
-
   ingress {
     from_port = 22
     to_port   = 22
@@ -42,6 +72,14 @@ resource "aws_security_group" "ec2_mongodb_sg" {
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    from_port = 8082
+    to_port   = 8082
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port = 0
     to_port = 0
