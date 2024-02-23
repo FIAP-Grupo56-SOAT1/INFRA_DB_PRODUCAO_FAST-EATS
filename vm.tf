@@ -1,3 +1,5 @@
+#para criar a par de chave abrir o terminar e executar:
+# ssh-keygen -f aws-key
 
 #-----------------CRIANDO UMA VM COM MONGODB E VPC FASTEATS-----------------
 #data "terraform_remote_state" "vpc_fasteats" {
