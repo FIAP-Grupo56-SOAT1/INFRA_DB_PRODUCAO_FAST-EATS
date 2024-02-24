@@ -42,4 +42,9 @@ sudo docker pull mongo:latest
 
 # Run MongoDB image as a container
 sudo docker rm mongodb
-sudo docker run -d --name mongodb -p 27017:27017 mongo
+#sudo docker run -d --name mongodb -p 27017:27017 mongo
+sudo docker run -d --name mongodb -p 27017:27017 \
+      --restart unless-stopped \
+      -e MONGO_INITDB_ROOT_USERNAME=fiap56 \
+      -e MONGO_INITDB_ROOT_PASSWORD=fiapsoat1grupo56 \
+      mongo

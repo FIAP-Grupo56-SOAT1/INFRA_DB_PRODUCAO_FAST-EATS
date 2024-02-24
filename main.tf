@@ -24,3 +24,14 @@ provider "aws" {
     }
   }
 }
+
+# bloco do tipo data que lê um terraform remote state
+# vai ler um backend to tipo s3 onde estão os remote states
+data "terraform_remote_state" "vm_mongodb" {
+  backend = "s3"
+  config = {
+    bucket = "bucket-fiap56-to-remote-state"
+    key    = "aws-ec2-mongodb-fiap56/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
