@@ -1,11 +1,6 @@
 name: 'DESTROY infra producao'
 on:
   workflow_dispatch:
-    inputs:
-      env:
-        description: 'Environment'
-        required: true
-        default: 'prod'
 
 permissions:
   contents: read
