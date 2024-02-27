@@ -1,4 +1,3 @@
-
 variable "region" {
   description = "Região onde s recursos serão criados"
   type        = string
@@ -12,7 +11,7 @@ variable "owner" {
 }
 
 variable "managedby" {
-  description = "Quem gerencia gerenciado"
+  description = "Quem gerencia a infraestrutura"
   type        = string
   default     = "terraform"
 }
