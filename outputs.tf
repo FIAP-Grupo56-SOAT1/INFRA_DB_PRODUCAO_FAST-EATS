@@ -1,5 +1,5 @@
-output "ip_ec2_dynamodb" {
-  description = "ip_vpc_dynamodb"
+output "ip_ec2_mongodb" {
+  description = "ip_ec2_mongodb"
   value       = aws_instance.vm_mongodb.public_ip
 }
 

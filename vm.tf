@@ -76,8 +76,8 @@ resource "aws_security_group" "ec2_mongodb_sg" {
   }
 
   ingress {
-    from_port = 8082
-    to_port   = 8082
+    from_port = 8080
+    to_port   = 8080
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
