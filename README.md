@@ -1,6 +1,6 @@
 # Infraestrutura de Banco de Dados com MongoDB
 
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/FIAP-Grupo56-SOAT1/INFRA_DB_FAST-EATS/deploy-producao.yml?logo=github)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/FIAP-Grupo56-SOAT1/INFRA_DB_PRODUCAO_FAST-EATS/deploy-producao.yml?logo=github)
 
 Este repositório é dedicado à configuração e gerenciamento da infraestrutura de banco de dados utilizando MongoDB.
 
